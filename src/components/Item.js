@@ -1,10 +1,10 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
-import { FONTS, SIZES } from "../constants";
+import { FONTS, SIZES, COLORS } from "../constants";
 import { Ionicons } from '@expo/vector-icons';
 
 const Item = ({ item, onPress }) => {
-    const { title, description, price, image, rating, category } = item;
+    const { title, price, image, rating, category } = item;
     return (
         <TouchableOpacity
             style={{
@@ -22,18 +22,19 @@ const Item = ({ item, onPress }) => {
                     style={{
                         height: "100%",
                         width: "100%",
-                        resizeMode: "cover"
+                        resizeMode: "cover",
+                        borderRadius: SIZES.radius
                     }}
                 />
             </View>
 
-            <View style={{ flex: 0.65, paddingHorizontal: SIZES.padding, paddingVertical: SIZES.base }}>
+            <View style={{ flex: 0.65, paddingHorizontal: SIZES.padding }}>
                 <Text style={{ ...FONTS.h3 }}>{title}</Text>
                 <Text style={{ ...FONTS.h3_light }}>{category}</Text>
                 <Text style={{ ...FONTS.h3 }}>{`Price : ${price}`}</Text>
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Text style={{ ...FONTS.h3, marginRight: SIZES.base }}>{`Rate : ${rating.rate}`}</Text>
-                    <Ionicons name="star" size={24} color="yellow" />
+                    <Ionicons name="star" size={24} color={COLORS.star} />
                 </View>
             </View>
         </TouchableOpacity>

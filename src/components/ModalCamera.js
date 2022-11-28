@@ -1,9 +1,19 @@
 import React from "react";
 import { View, Text, Modal, TouchableOpacity } from "react-native";
+import { COLORS, SIZES, FONTS } from "../constants";
 import { BlurView } from 'expo-blur';
-import { openCamera, pickImage } from "../components"
+import { openCamera, pickImage } from "../components";
 
-const Modal = ({ show, setShow }) => {
+const ModalCamera = ({ show, setShow, setImage }) => {
+
+    const handelCamera = () => {
+        openCamera(setImage, setShow);
+    }
+
+    const handleLibrary = () => {
+        pickImage(setImage, setShow);
+    }
+
     return (
         <Modal
             animationType="slide"
@@ -18,7 +28,13 @@ const Modal = ({ show, setShow }) => {
             >
                 {/* button to close modal */}
                 <TouchableOpacity
-                    style={styles.absolute}
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        bottom: 0,
+                        left: 0,
+                        right: 0
+                    }}
                     onPress={() => setShow(false)}
                 >
 
@@ -30,60 +46,59 @@ const Modal = ({ show, setShow }) => {
                         justifyContent: 'center',
                         alignItems: 'center',
                         width: '85%',
-                        backgroundColor: COLORS.lightGray2,
+                        backgroundColor: COLORS.white,
                         borderRadius: SIZES.radius
                     }}
                 >
                     <View
                         style={{
-                            backgroundColor: COLORS.lightGray2,
-                            paddingBottom: SIZES.padding,
+                            borderBottomWidth: 1,
                             height: 90,
                             width: '100%',
                             alignItems: 'center',
                             borderTopLeftRadius: SIZES.radius,
                             borderTopRightRadius: SIZES.radius,
+                            justifyContent: "center"
                         }}
                     >
-                        <Text style={{ ...FONTS.body1, padding: SIZES.base }}>Chọn 1 tấm ảnh</Text>
+                        <Text style={{ ...FONTS.h2, padding: SIZES.base }}>Chọn 1 tấm ảnh</Text>
                     </View>
                     {/* Camera */}
                     <TouchableOpacity
                         style={{
                             height: 70,
-                            width: '91%',
-                            backgroundColor: COLORS.white,
+                            width: '100%',
+                            borderBottomWidth: 1,
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderRadius: SIZES.radius * 2,
                             marginBottom: SIZES.base,
                         }}
-                        onPress={openCamera}
+                        onPress={handelCamera}
                     >
-                        <Text style={{ ...FONTS.h2_light, color: COLORS.lightGray }}>Dùng camera</Text>
+                        <Text style={{ ...FONTS.h2_light, color: COLORS.black }}>Dùng camera</Text>
                     </TouchableOpacity>
 
                     {/* Library */}
                     <TouchableOpacity
                         style={{
                             height: 70,
-                            width: '91%',
-                            backgroundColor: COLORS.white,
+                            width: '100%',
                             justifyContent: 'center',
                             alignItems: 'center',
                             borderRadius: SIZES.radius * 2,
                             marginBottom: SIZES.padding,
                         }}
 
-                        onPress={pickImage}
+                        onPress={handleLibrary}
                     >
-                        <Text style={{ ...FONTS.h2_light, color: COLORS.lightGray }}>Dùng thư viện ảnh</Text>
+                        <Text style={{ ...FONTS.h2_light, color: COLORS.black }}>Dùng thư viện ảnh</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={{
                             height: 70,
                             width: '91%',
-                            backgroundColor: COLORS.primary,
+                            backgroundColor: COLORS.black,
                             justifyContent: 'center',
                             alignItems: 'center',
                             marginBottom: SIZES.padding * 2,
@@ -97,7 +112,7 @@ const Modal = ({ show, setShow }) => {
                             isLoading ? <ActivityIndicator size="large" color={COLORS.white} /> :
                                 <Text style={{ ...FONTS.h2, color: COLORS.white }}>Hủy</Text>
                         } */}
-                        <Text style={{ ...FONTS.h2, color: COLORS.white }}>Hủy</Text>
+                        <Text style={{ ...FONTS.h3, color: COLORS.white }}>Hủy</Text>
                     </TouchableOpacity>
                 </View>
             </BlurView>
@@ -105,4 +120,4 @@ const Modal = ({ show, setShow }) => {
     )
 }
 
-export default Modal;
+export default ModalCamera;

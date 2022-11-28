@@ -62,13 +62,16 @@ export const postProduct = (addProduct) => {
         .then((response) => {
             if (response.status == 200) {
                 dispatch(postProductSucess(response.data));
+                return true;
             }
             else {
                 dispatch(postProductFailure(response.data));
+                return false;
             }
         })
         .catch((error) => {
             dispatch(postProductFailure(error));
+            return false;
         })
 }
 
@@ -140,3 +143,21 @@ export const deleteProduct = (id) => {
             dispatch(deleteProductFailure(error));
         })
 }
+
+export const getAllCategories = (categories) => ({
+    type: types.GET_ALL_CATEGORIES,
+    payload: { categories }
+});
+
+export const getCategories = () => {
+    return axiosInstance.get("/categories")
+        .then((response) => {
+            if (response.status == 200) {
+                dispatch(getAllCategories(response.data));
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+}
+

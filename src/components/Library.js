@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 
-const pickImage = async (setImage) => {
+const pickImage = async (setImage, setShow) => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (permissionResult.granted === false) {
         alert("You've refused to allow this appp to access your photos!");
@@ -8,8 +8,8 @@ const pickImage = async (setImage) => {
     }
     const result = await ImagePicker.launchImageLibraryAsync();
     if (!result.canceled) {
-        setImage(result.assets[0].uri);
-        console.log(result.assets);
+        setImage("image", result.assets[0].uri);
+        setShow(false);
     }
 
 }

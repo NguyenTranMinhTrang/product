@@ -10,10 +10,10 @@ import actions from "../redux/actions";
 const Product = ({ navigation }) => {
 
     const products = useSelector((state) => state.product);
-    console.log(products);
 
     React.useEffect(() => {
         actions.getProduct(1000);
+        actions.getCategories();
     }, []);
 
     const onPress = (item) => {
@@ -41,6 +41,8 @@ const Product = ({ navigation }) => {
                     backgroundColor: COLORS.black,
                     borderRadius: SIZES.radius
                 }}
+
+                onPress={() => navigation.navigate('AddProduct')}
             >
                 <AntDesign name="plus" size={30} color={COLORS.white} />
             </TouchableOpacity>

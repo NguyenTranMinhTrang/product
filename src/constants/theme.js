@@ -9,17 +9,7 @@ export const COLORS = {
     // colors
     black: "#1E1F20",
     white: "#FFFFFF",
-    lightGray: "#E8EAED",
-    gray: "#8b9097",
-    lightBlue: "#A7CBD9",
-    green: "#66CC66",
-    blue: "#00bfff",
-    bubble: "#C57CAC",
-    lightBubble: "#8022D9",
-    pink: "#EE7C6B",
-    red: "#D85963",
-    orange: "#f4a460",
-    complete: "#F6B297"
+    star: "#ffd700"
 
 };
 export const SIZES = {

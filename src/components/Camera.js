@@ -1,6 +1,6 @@
 import * as ImagePicker from 'expo-image-picker';
 
-const openCamera = async (setImage) => {
+const openCamera = async (setImage, setShow) => {
     const permissionResult = await ImagePicker.requestCameraPermissionsAsync();
     if (permissionResult.granted === false) {
         alert("You've refused to allow this appp to access your camera!");
@@ -11,8 +11,8 @@ const openCamera = async (setImage) => {
     console.log(result);
 
     if (!result.canceled) {
-        setImage(result.assets[0].uri);
-        console.log(result.assets);
+        setImage("image", result.assets[0].uri);
+        setShow(false);
     }
 }
 

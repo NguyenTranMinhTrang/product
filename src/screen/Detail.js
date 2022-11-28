@@ -3,8 +3,8 @@ import { View, Text, SafeAreaView, Image, ScrollView, TouchableOpacity } from "r
 import { Formik, FastField } from "formik";
 import debounce from "lodash.debounce";
 import * as yup from "yup";
-import { SIZES, COLORS } from "../constants";
-import { InputField } from "../components";
+import { SIZES, COLORS, FONTS } from "../constants";
+import { InputField, ModalCamera } from "../components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
@@ -13,7 +13,6 @@ const Detail = ({ navigation, route }) => {
 
     const [show, setShow] = React.useState(false);
 
-    console.log(route.params.item);
     const formik = React.useRef();
 
     React.useEffect(() => {
@@ -27,6 +26,9 @@ const Detail = ({ navigation, route }) => {
 
     const validate = yup.object().shape({
         title: yup.string().required("Title is required !"),
+        category: yup.string().required("Category is required !"),
+        description: yup.string().required("Description is required !"),
+        price: yup.number().typeError("You must specify a number").min(0, "Min value 0")
     });
 
 
@@ -49,14 +51,16 @@ const Detail = ({ navigation, route }) => {
                         console.log(values);
                     }}
                 >
-                    {({ setFieldValue, values, handleSubmit, errors, touched, isSubmitting }) => {
+                    {({ setFieldValue, values, handleSubmit }) => {
+                        console.log(values);
                         return (
                             <ScrollView style={{ flex: 1 }}>
-                                <View>
+                                <ModalCamera show={show} setShow={setShow} setImage={setFieldValue} />
+                                <View style={{ flex: 0.4 }}>
                                     <Image
                                         source={{ uri: values.image }}
                                         style={{
-                                            height: SIZES.height * 0.5,
+                                            height: SIZES.height * 0.4,
                                             width: "100%"
                                         }}
                                         resizeMode="cover"
@@ -95,6 +99,8 @@ const Detail = ({ navigation, route }) => {
                                             borderRadius: 25,
                                             backgroundColor: 'rgba(255,255,255,0.5)'
                                         }}
+
+                                        onPress={() => setShow(true)}
                                     >
                                         <Ionicons name="ios-camera-sharp" size={30} color={COLORS.white} />
                                     </TouchableOpacity>
@@ -102,8 +108,8 @@ const Detail = ({ navigation, route }) => {
 
                                 <View
                                     style={{
-                                        flex: 0.5,
-                                        padding: SIZES.padding
+                                        flex: 0.6,
+                                        padding: SIZES.padding,
                                     }}
                                 >
                                     {/* title */}
@@ -141,6 +147,24 @@ const Detail = ({ navigation, route }) => {
                                             <InputField title="Price: " {...props} />
                                         )}
                                     </FastField>
+
+                                    <View
+                                        style={{ alignItems: "center", marginTop: SIZES.padding }}
+                                    >
+                                        <TouchableOpacity
+                                            style={{
+                                                width: "90%",
+                                                backgroundColor: COLORS.black,
+                                                justifyContent: "center",
+                                                alignItems: "center",
+                                                borderRadius: SIZES.radius,
+                                                paddingVertical: SIZES.base * 2
+                                            }}
+                                            onPress={handleSubmit}
+                                        >
+                                            <Text style={{ ...FONTS.h3, color: COLORS.white }}>Update</Text>
+                                        </TouchableOpacity>
+                                    </View>
                                 </View>
                             </ScrollView>
                         )

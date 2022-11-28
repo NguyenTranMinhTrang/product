@@ -6,7 +6,8 @@ const initialState = {
     loading: false,
     addProduct: null,
     updateProduct: null,
-    deleteProduct: null
+    deleteProduct: null,
+    categories: []
 }
 
 const product = (state = initialState, action) => {
@@ -93,6 +94,12 @@ const product = (state = initialState, action) => {
                 ...state,
                 loading: false,
                 error: action.payload.error
+            }
+
+        case types.GET_ALL_CATEGORIES:
+            return {
+                ...state,
+                categories: action.payload.categories
             }
         default:
             return state;
