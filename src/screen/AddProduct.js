@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, SafeAreaView, Image, ScrollView, StyleSheet, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
+import { View, Text, SafeAreaView, Image, ScrollView, TouchableOpacity, ActivityIndicator, Alert } from "react-native";
 import { Formik, FastField } from "formik";
 import debounce from "lodash.debounce";
 import * as yup from "yup";
@@ -7,15 +7,13 @@ import { SIZES, COLORS, FONTS } from "../constants";
 import { InputField, ModalCamera, Combobox } from "../components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AntDesign, Ionicons } from '@expo/vector-icons';
-import actions from "../redux/actions";
-import { useSelector } from "react-redux";
+import { postProduct } from "../api/productApi";
 
-const AddProduct = ({ navigation }) => {
+const AddProduct = ({ navigation, route }) => {
 
+    const [loading, setLoading] = React.useState(false);
     const [show, setShow] = React.useState(false);
-    const product = useSelector((state) => state.product);
-
-    console.log(product.categories);
+    const categories = route.params.categories;
 
     const formik = React.useRef();
 
@@ -35,6 +33,31 @@ const AddProduct = ({ navigation }) => {
         description: yup.string().required("Description is required !"),
         price: yup.number().typeError("You must specify a number").min(0, "Min value 0")
     });
+
+    const handleCancel = () => {
+        navigation.goBack();
+        route.params.reFresh();
+    }
+
+    const handleAddProduct = async (values) => {
+        setLoading(true);
+        const data = await postProduct(values);
+        setLoading(false);
+        if (data.code == 1) {
+            formik.current.resetForm();
+            Alert.alert("Sucess", "Do you want to continue ?",
+                [
+                    { text: 'Cancel', onPress: handleCancel },
+                    { text: 'OK', onPress: () => console.log('OK Pressed') },
+                ],
+                { cancelable: false }
+            );
+
+        }
+        else {
+            Alert.alert(data.data);
+        }
+    }
 
     const renderHeader = () => {
         return (
@@ -92,16 +115,7 @@ const AddProduct = ({ navigation }) => {
                         image: "",
                         category: "electronic"
                     }}
-                    onSubmit={async (values) => {
-                        console.log(values);
-                        const isSuccess = await actions.postProduct(values);
-                        if (isSuccess) {
-                            formik.current.resetForm();
-                        }
-                        else {
-                            Alert.alert(product.error);
-                        }
-                    }}
+                    onSubmit={handleAddProduct}
                 >
                     {({ setFieldValue, values, handleSubmit }) => {
                         return (
@@ -161,7 +175,7 @@ const AddProduct = ({ navigation }) => {
 
                                     {/* category */}
 
-                                    <Combobox category={values.category} setFieldValue={setFieldValue} />
+                                    <Combobox categories={categories} category={values.category} setFieldValue={setFieldValue} />
 
                                     {/* description */}
                                     <FastField
@@ -196,7 +210,7 @@ const AddProduct = ({ navigation }) => {
                                             onPress={handleSubmit}
                                         >
                                             {
-                                                product.loading ?
+                                                loading ?
                                                     <ActivityIndicator size="large" color={COLORS.white} />
                                                     :
                                                     <Text style={{ ...FONTS.h3, color: COLORS.white }}>Add</Text>
@@ -212,15 +226,5 @@ const AddProduct = ({ navigation }) => {
         </SafeAreaView>
     )
 }
-
-const styles = StyleSheet.create({
-    dropdown: {
-        height: 50,
-        borderColor: 'gray',
-        borderWidth: 0.5,
-        borderRadius: 8,
-        paddingHorizontal: 8,
-    },
-});
 
 export default AddProduct;

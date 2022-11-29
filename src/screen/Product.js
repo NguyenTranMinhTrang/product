@@ -3,108 +3,59 @@ import { View, Text, FlatList, SafeAreaView, TouchableOpacity, ActivityIndicator
 import { COLORS, FONTS, SIZES } from "../constants";
 import { AntDesign } from '@expo/vector-icons';
 import { Item } from "../components";
+import { getProductList, getCategories } from "../api/productApi";
 // Redux
-import axiosInstance from "../api/axiosInstance";
 import axios from "axios";
 
 const Product = ({ navigation }) => {
 
     const [list, setList] = React.useState({
-        loading: false,
-        products: []
+        loading: true,
+        products: [],
+        categoryList: []
     });
-    const [categoryList, setCategoryList] = React.useState(null);
 
-    const getProductList = async () => {
+    const reFresh = async () => {
         setList({
             ...list,
             loading: true
         });
-        const data = await axiosInstance.get("/")
-            .then((response) => {
-                console.log("1.1: ", new Date());
-                if (response.status == 200) {
-                    return {
-                        code: 1,
-                        data: response.data
-                    };
-                }
-                else {
-                    return {
-                        code: 0,
-                        data: response.data
-                    };
-                }
+        const data = await getProductList();
+        if (data && data.code == 1) {
+            setList({
+                ...list,
+                loading: false,
+                products: data.data
             })
-            .catch((error) => {
-                return {
-                    code: 0,
-                    data: error
-                };
-            });
-        return data;
+        }
+        else {
+            Alert.alert(`Error: ${data.data}`);
+        }
     }
 
-    const getCategories = async () => {
-        const data = await axiosInstance.get("/categories")
-            .then((response) => {
-                if (response.status == 200) {
-                    return {
-                        code: 1,
-                        data: response.data
-                    };
-                }
-                else {
-                    return {
-                        code: 0,
-                        data: response.data
-                    };
-                }
-            })
-            .catch((error) => {
-                return {
-                    code: 0,
-                    data: error
-                };
-            })
-        return data;
+    const handleScroll = async (e) => {
+        if (e.nativeEvent.contentOffset.y < -5) {
+            reFresh();
+        }
     }
 
     React.useEffect(() => {
-
-        /* const t0 = performance.now();
-        Promise.all([getProductList(), getCategories()]).then(([productList, categoryList]) => {
-            console.log("productList: ", productList);
-            console.log("categoryList: ", categoryList);
-            const t1 = performance.now();
-            if (productList) {
-                setList(productList);
-            }
-            if (categoryList) {
-                setCategoryList(categoryList);
-            }
-            console.log(`Call 2 api took ${t1 - t0} milliseconds.`);
-        }); */
-
         axios.all([getProductList(), getCategories()])
             .then(
                 axios.spread((productList, categoryList) => {
-                    if (productList.code == 1) {
+                    if (productList.code == 1 && categoryList.code == 1) {
                         setList({
                             loading: false,
-                            products: productList.data
+                            products: productList.data,
+                            categoryList: categoryList.data
                         })
                     }
-                    else {
+
+                    if (productList.code == 0) {
                         Alert.alert(productList.data);
                     }
 
-                    if (categoryList.code == 1) {
-                        setCategoryList({
-                            ...categoryList.data
-                        })
-                    }
-                    else {
+                    if (categoryList.code == 0) {
                         Alert.alert(categoryList.data);
                     }
                 })
@@ -137,7 +88,7 @@ const Product = ({ navigation }) => {
                     borderRadius: SIZES.radius
                 }}
 
-                onPress={() => navigation.navigate('AddProduct')}
+                onPress={() => navigation.navigate('AddProduct', { categories: list.categoryList, reFresh: reFresh })}
             >
                 <AntDesign name="plus" size={30} color={COLORS.white} />
             </TouchableOpacity>
@@ -165,11 +116,13 @@ const Product = ({ navigation }) => {
                             renderItem={renderItem}
                             initialNumToRender={4}
                             windowSize={3}
+                            onScroll={handleScroll}
                         />
                 }
             </View>
         )
     }
+
     console.log("Home");
     return (
         <SafeAreaView style={{ flex: 1 }}>

@@ -2,11 +2,8 @@ import React from "react";
 import { View, Text } from "react-native";
 import { SIZES, COLORS, FONTS } from "../constants";
 import { SelectList } from "react-native-dropdown-select-list";
-import { useSelector } from "react-redux";
 
-const Combobox = ({ category, setFieldValue }) => {
-
-    const categories = useSelector((state) => state.product.categories);
+const Combobox = ({ category, setFieldValue, categories }) => {
 
     return (
         <View
