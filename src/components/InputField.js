@@ -19,6 +19,7 @@ const InputField = ({ field, title, meta }) => {
             >
                 <Text style={{ ...FONTS.h3 }}>{title}</Text>
                 <TextInput
+                    numberOfLines={4}
                     style={{
                         borderColor: COLORS.white,
                         marginLeft: SIZES.base,

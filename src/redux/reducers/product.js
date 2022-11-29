@@ -13,13 +13,11 @@ const initialState = {
 const product = (state = initialState, action) => {
     switch (action.type) {
         case types.GET_PRODUCT_BEGIN:
-            console.log('Into begin');
             return {
                 ...state,
                 loading: true
             }
         case types.GET_PRODUCT_SUCCESS:
-            console.log('Get success');
             return {
                 ...state,
                 loading: false,
@@ -34,13 +32,11 @@ const product = (state = initialState, action) => {
             }
 
         case types.POST_PRODUCT_BEGIN:
-            console.log('Into begin');
             return {
                 ...state,
                 loading: true
             }
         case types.POST_PRODUCT_SUCCESS:
-            console.log('Post success');
             return {
                 ...state,
                 loading: false,
@@ -55,13 +51,11 @@ const product = (state = initialState, action) => {
             }
 
         case types.EDIT_PRODUCT_BEGIN:
-            console.log('Into begin');
             return {
                 ...state,
                 loading: true
             }
         case types.EDIT_PRODUCT_SUCCESS:
-            console.log('Update success');
             return {
                 ...state,
                 loading: false,
@@ -76,13 +70,11 @@ const product = (state = initialState, action) => {
             }
 
         case types.DELETE_PRODUCT_BEGIN:
-            console.log('Into begin');
             return {
                 ...state,
                 loading: true
             }
         case types.DELETE_PRODUCT_SUCCESS:
-            console.log('Delete success');
             return {
                 ...state,
                 loading: false,

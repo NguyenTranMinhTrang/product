@@ -23,12 +23,15 @@ export const getProductFailure = (error) => ({
 });
 
 export const getProduct = (limit) => {
+    console.log("1: ", new Date());
     dispatch(getProductBegin());
     let apiUrl = `?limit=${limit}`;
     return axiosInstance.get(apiUrl)
         .then((response) => {
+            console.log("1.1: ", new Date());
             if (response.status == 200) {
                 dispatch(getProductSuccess(response.data));
+                return "get product";
             }
             else {
                 dispatch(getProductFailure(response.data));
@@ -37,6 +40,21 @@ export const getProduct = (limit) => {
         .catch((error) => {
             dispatch(getProductFailure(error));
         });
+}
+
+export const getCategories = () => {
+    console.log("2: ", new Date());
+    return axiosInstance.get("/categories")
+        .then((response) => {
+            console.log("2.2: ", new Date());
+            if (response.status == 200) {
+                dispatch(getAllCategories(response.data));
+                return "get categories";
+            }
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 }
 
 /* Post */
@@ -149,15 +167,5 @@ export const getAllCategories = (categories) => ({
     payload: { categories }
 });
 
-export const getCategories = () => {
-    return axiosInstance.get("/categories")
-        .then((response) => {
-            if (response.status == 200) {
-                dispatch(getAllCategories(response.data));
-            }
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-}
+
 
