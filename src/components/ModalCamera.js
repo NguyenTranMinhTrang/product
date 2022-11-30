@@ -5,14 +5,13 @@ import { BlurView } from 'expo-blur';
 import { openCamera, pickImage } from "../components";
 
 const ModalCamera = ({ show, setShow, setImage }) => {
-
     const handelCamera = () => {
         openCamera(setImage, setShow);
-    }
+    };
 
     const handleLibrary = () => {
         pickImage(setImage, setShow);
-    }
+    };
 
     return (
         <Modal
@@ -107,17 +106,12 @@ const ModalCamera = ({ show, setShow, setImage }) => {
 
                         onPress={() => setShow(false)}
                     >
-
-                        {/* {
-                            isLoading ? <ActivityIndicator size="large" color={COLORS.white} /> :
-                                <Text style={{ ...FONTS.h2, color: COLORS.white }}>Hủy</Text>
-                        } */}
                         <Text style={{ ...FONTS.h3, color: COLORS.white }}>Hủy</Text>
                     </TouchableOpacity>
                 </View>
             </BlurView>
         </Modal>
-    )
-}
+    );
+};
 
 export default ModalCamera;

@@ -14,7 +14,7 @@ const Item = ({ item, onPress }) => {
                 alignItems: "center"
             }}
 
-            onPress={() => { onPress(item) }}
+            onPress={() => { onPress(item); }}
         >
             <View style={{ flex: 0.35 }}>
                 <Image
@@ -38,7 +38,7 @@ const Item = ({ item, onPress }) => {
                 </View>
             </View>
         </TouchableOpacity>
-    )
-}
+    );
+};
 
 export default Item;

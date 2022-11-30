@@ -12,4 +12,4 @@ export {
     pickImage,
     ModalCamera,
     Combobox
-}
+};

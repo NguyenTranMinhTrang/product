@@ -43,7 +43,7 @@ const InputField = ({ field, title, meta }) => {
                 <Text style={{ ...FONTS.h3_light, color: "red", marginTop: SIZES.base }}>{error}</Text>
             }
         </View>
-    )
-}
+    );
+};
 
 export default InputField;

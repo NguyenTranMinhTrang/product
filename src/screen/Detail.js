@@ -8,9 +8,7 @@ import { InputField, ModalCamera } from "../components";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 
-
 const Detail = ({ navigation, route }) => {
-
     const [show, setShow] = React.useState(false);
 
     const formik = React.useRef();
@@ -21,7 +19,7 @@ const Detail = ({ navigation, route }) => {
 
     const debouncedValidate = React.useMemo(
         () => debounce(() => formik.current?.validateForm, 500),
-        [formik],
+        [formik]
     );
 
     const validate = yup.object().shape({
@@ -30,7 +28,6 @@ const Detail = ({ navigation, route }) => {
         description: yup.string().required("Description is required !"),
         price: yup.number().typeError("You must specify a number").min(0, "Min value 0")
     });
-
 
     return (
         <SafeAreaView
@@ -167,12 +164,12 @@ const Detail = ({ navigation, route }) => {
                                     </View>
                                 </View>
                             </ScrollView>
-                        )
+                        );
                     }}
                 </Formik>
             </KeyboardAwareScrollView>
         </SafeAreaView>
-    )
-}
+    );
+};
 
 export default Detail;

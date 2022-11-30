@@ -10,7 +10,6 @@ import { AntDesign, Ionicons } from '@expo/vector-icons';
 import { postProduct } from "../api/productApi";
 
 const AddProduct = ({ navigation, route }) => {
-
     const [loading, setLoading] = React.useState(false);
     const [show, setShow] = React.useState(false);
     const categories = route.params.categories;
@@ -37,13 +36,13 @@ const AddProduct = ({ navigation, route }) => {
     const handleCancel = () => {
         navigation.goBack();
         route.params.reFresh();
-    }
+    };
 
     const handleAddProduct = async (values) => {
         setLoading(true);
         const data = await postProduct(values);
         setLoading(false);
-        if (data.code == 1) {
+        if (data.code === 1) {
             formik.current.resetForm();
             Alert.alert("Sucess", "Do you want to continue ?",
                 [
@@ -52,12 +51,10 @@ const AddProduct = ({ navigation, route }) => {
                 ],
                 { cancelable: false }
             );
-
-        }
-        else {
+        } else {
             Alert.alert(data.data);
         }
-    }
+    };
 
     const renderHeader = () => {
         return (
@@ -91,9 +88,8 @@ const AddProduct = ({ navigation, route }) => {
                     />
                 </TouchableOpacity>
             </View>
-        )
-    }
-
+        );
+    };
 
     return (
         <SafeAreaView
@@ -210,21 +206,20 @@ const AddProduct = ({ navigation, route }) => {
                                             onPress={handleSubmit}
                                         >
                                             {
-                                                loading ?
-                                                    <ActivityIndicator size="large" color={COLORS.white} />
-                                                    :
-                                                    <Text style={{ ...FONTS.h3, color: COLORS.white }}>Add</Text>
+                                                loading
+                                                    ? <ActivityIndicator size="large" color={COLORS.white} />
+                                                    : <Text style={{ ...FONTS.h3, color: COLORS.white }}>Add</Text>
                                             }
                                         </TouchableOpacity>
                                     </View>
                                 </View>
                             </ScrollView>
-                        )
+                        );
                     }}
                 </Formik>
             </KeyboardAwareScrollView>
         </SafeAreaView>
-    )
-}
+    );
+};
 
 export default AddProduct;

@@ -4,7 +4,6 @@ import { SIZES, COLORS, FONTS } from "../constants";
 import { SelectList } from "react-native-dropdown-select-list";
 
 const Combobox = ({ category, setFieldValue, categories }) => {
-
     return (
         <View
             style={{
@@ -35,7 +34,7 @@ const Combobox = ({ category, setFieldValue, categories }) => {
                 setSelected={(val) => setFieldValue("category", val)}
             />
         </View>
-    )
-}
+    );
+};
 
 export default Combobox;
